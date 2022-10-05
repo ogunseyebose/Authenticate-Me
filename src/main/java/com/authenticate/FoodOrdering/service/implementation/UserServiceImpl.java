@@ -7,9 +7,14 @@ import com.authenticate.FoodOrdering.repository.UserRepo;
 import com.authenticate.FoodOrdering.security.JWTUtils;
 import com.authenticate.FoodOrdering.service.UserService;
 import com.google.gson.Gson;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +22,17 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl  implements UserDetailsService,UserService {
     private final UserRepo userRepo;
     private final ModelMapper modelMapper;
 
-  JWTUtils jwtUtils;
-    private  final BCryptPasswordEncoder bCryptPasswordEncoder;
+    //private final JWTUtils jwtUtils;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     Response resp = new Response();
 
-    Gson g= new Gson();
+    Gson g = new Gson();
 
 
     @Override
@@ -48,7 +53,7 @@ public class UserServiceImpl implements UserService {
             } else {
                 User user = new User();
                 userRequest.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
-                user= modelMapper.map(userRequest, User.class);
+                user = modelMapper.map(userRequest, User.class);
                 userRepo.save(user);
                 resp.setResp_Code("00");
                 resp.setResp_Msg("Success");
@@ -60,31 +65,36 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException(e);
 
 
-
-}
+        }
         return resp;
     }
 
     @Override
     public Response login(UserRequest userRequest) {
-        Optional<User> userOptional = userRepo.findByEmail(userRequest.getEmail());
-        if(userOptional.isPresent()){
-            if(bCryptPasswordEncoder.matches(userRequest.getPassword(),userOptional.get().getPassword())){
+        User user= (User) loadUserByUsername(userRequest.getEmail());
+        if (user!=null) {
+            if (bCryptPasswordEncoder.matches(userRequest.getPassword(), user.getPassword())) {
                 resp.setResp_Code("00");
                 resp.setResp_Msg("Login Successful");
-                resp.setToken(jwtUtils.generateToken(userOptional.get()));
-            }
-            else{
+               // resp.setToken(jwtUtils.generateToken(user));
+            } else {
                 resp.setResp_Code("84");
                 resp.setResp_Msg("Invalid Password....Try Again");
             }
 
-        }
-        else{
+        } else {
             resp.setResp_Code("82");
             resp.setResp_Msg("Invalid Credentials");
         }
         return resp;
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepo.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not present"));
+        return user;
 
     }
 }

@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-//@EnableAutoConfiguration
-@EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class})
-@EnableJpaRepositories("com.authenticate.AuthenticateMe.repository")
+@EnableAutoConfiguration
+//@EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class})
+@EnableJpaRepositories("com.authenticate.FoodOrdering.repository")
 
 
 public class AuthenticateMeApplication {
