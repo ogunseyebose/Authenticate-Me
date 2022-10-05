@@ -1,8 +1,9 @@
 package com.authenticate.FoodOrdering.security;
 
 public class SecurityConstants {
-	    public static final String SECRET = "SecretKeyToGenJWTsForAfricaCollect";
-	    public static final String ISSUER = "Ecobank";
+	static final String SECRET_KEY= "+[opkkgioi095ikfjji8439405-";
+
+	public static final String ISSUER = "Ecobank";
 	    public static final long EXPIRATION_TIME = 3600000; // 1hr
 	    public static final String TOKEN_PREFIX = "Bearer ";
 	    public static final String HEADER_STRING = "Authorization";
