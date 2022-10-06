@@ -4,9 +4,7 @@ import com.authenticate.FoodOrdering.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
 import java.util.Date;
-
 import static com.authenticate.FoodOrdering.security.SecurityConstants.EXPIRATION_TIME;
 import static com.authenticate.FoodOrdering.security.SecurityConstants.SECRET_KEY;
 
@@ -14,7 +12,6 @@ import static com.authenticate.FoodOrdering.security.SecurityConstants.SECRET_KE
 public class JWTUtils  {
 
     public String generateToken(User user){
-        //Map<String, Object> claims= new HashMap<>();
         return createToken(user.getEmail());
     }
 

@@ -38,12 +38,6 @@ public class UserServiceImpl  implements UserDetailsService,UserService {
     @Override
     public Response signUp(UserRequest userRequest) {
         try {
-
-
-            /*String cipherText = EncryptionUtil.encrypt(userRequest);
-            log.info("Encrypted text "+ cipherText);
-            String plainText = EncryptionUtil.decrypt(cipherText);
-            log.info("Decrypted text "+ plainText);*/
             Optional<User> userOptional = userRepo.findByEmail(userRequest.getEmail());
             if (userOptional.isPresent()) {
                 resp.setResp_Code("82");
@@ -93,7 +87,7 @@ public class UserServiceImpl  implements UserDetailsService,UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not present"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return user;
 
     }
