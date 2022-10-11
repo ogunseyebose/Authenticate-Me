@@ -4,6 +4,7 @@ import com.authenticate.FoodOrdering.model.User;
 import com.authenticate.FoodOrdering.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,7 +19,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final UserDetailsService userDetailsService;
+
+    //private final UserDetailsService userDetailsService;
+    private final JWTUtils jwtUtils;
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -27,7 +30,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public ModelMapper modelmapper(){
         return new ModelMapper();
     }
-   // public  JwtAuthenticationEntryPoint unauthorizedHandler;
 
 
     @Override
@@ -39,13 +41,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll() .anyRequest().permitAll()
                 .and()
                 .formLogin().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .apply(new JwtConfigurer(jwtUtils));
+        ;
 
     }
-    @Override
+    /*@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 
-    }
+    }*/
 
 }

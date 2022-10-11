@@ -3,8 +3,8 @@ package com.authenticate.FoodOrdering.service.implementation;
 import com.authenticate.FoodOrdering.dto.request.UserRequest;
 import com.authenticate.FoodOrdering.dto.response.Response;
 import com.authenticate.FoodOrdering.model.User;
+
 import com.authenticate.FoodOrdering.repository.UserRepo;
-import com.authenticate.FoodOrdering.security.JWTUtils;
 import com.authenticate.FoodOrdering.service.UserService;
 import com.google.gson.Gson;
 import lombok.AllArgsConstructor;

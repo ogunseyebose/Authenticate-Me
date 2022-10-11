@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Data
@@ -17,6 +18,9 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String accountStatus;
+    private LocalDateTime dtCreated;
+    private LocalDateTime dtModified;
+
 
 
     @Override
