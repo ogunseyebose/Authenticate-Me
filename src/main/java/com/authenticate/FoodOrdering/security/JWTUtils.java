@@ -2,6 +2,7 @@ package com.authenticate.FoodOrdering.security;
 
 import com.authenticate.FoodOrdering.model.User;
 import com.authenticate.FoodOrdering.service.UserService;
+import com.authenticate.FoodOrdering.service.implementation.UserServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,7 +29,7 @@ public class JWTUtils  {
     @Value("${secret-key}")
     private String SECRET_KEY;
 
-    private final UserDetailsService userDetailsService;
+    private final UserServiceImpl userService;
 
     public String generateToken(User user){
         return createToken(user.getEmail());
@@ -50,7 +51,7 @@ public class JWTUtils  {
         return claims.getSubject();
     }
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(getUsernameFromToken(token));
+        UserDetails userDetails = userService.loadUserByUsername(getUsernameFromToken(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
     public String resolveToken(HttpServletRequest req) {

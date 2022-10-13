@@ -8,9 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = SecurityAutoConfiguration.class)
 @EnableJpaRepositories("com.authenticate.FoodOrdering.repository")
-
 @EnableScheduling
 public class AuthenticateMeApplication {
 

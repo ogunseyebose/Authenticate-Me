@@ -5,13 +5,19 @@ import com.authenticate.FoodOrdering.dto.response.Response;
 import com.authenticate.FoodOrdering.model.User;
 
 import com.authenticate.FoodOrdering.repository.UserRepo;
+import com.authenticate.FoodOrdering.security.JWTUtils;
 import com.authenticate.FoodOrdering.service.UserService;
 import com.google.gson.Gson;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,14 +25,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static org.springframework.http.ResponseEntity.status;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl  implements UserDetailsService,UserService {
     private final UserRepo userRepo;
     private final ModelMapper modelMapper;
+    private AuthenticationManager authenticationManager;
+//    private final UserViewMapper userViewMapper;
 
-    //private final JWTUtils jwtUtils;
+    private final JWTUtils jwtUtils;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
@@ -64,8 +75,17 @@ public class UserServiceImpl  implements UserDetailsService,UserService {
     }
 
     @Override
-    public Response login(UserRequest userRequest) {
-        User user= (User) loadUserByUsername(userRequest.getEmail());
+    public ResponseEntity<Object> login(UserRequest userRequest) {
+
+        try{
+            Authentication authentication= authenticationManager.authenticate
+                    (new UsernamePasswordAuthenticationToken(userRequest.getEmail(),userRequest.getPassword()));
+            User user= (User) authentication.getPrincipal();
+            return (ResponseEntity<Object>) ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwtUtils.generateToken(user));
+
+        } catch (BadCredentialsException e) {
+return status(HttpStatus.UNAUTHORIZED).build();        }
+        /*User user= (User) loadUserByUsername(userRequest.getEmail());
         if (user!=null) {
             if (bCryptPasswordEncoder.matches(userRequest.getPassword(), user.getPassword())) {
                 resp.setResp_Code("00");
@@ -80,7 +100,7 @@ public class UserServiceImpl  implements UserDetailsService,UserService {
             resp.setResp_Code("82");
             resp.setResp_Msg("Invalid Credentials");
         }
-        return resp;
+        return resp;*/
     }
 
 
