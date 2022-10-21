@@ -1,4 +1,3 @@
-/*
 package com.authenticate.FoodOrdering.controller;
 
 import com.authenticate.FoodOrdering.dto.request.OrderRequest;
@@ -7,10 +6,7 @@ import com.authenticate.FoodOrdering.enums.Status;
 import com.authenticate.FoodOrdering.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -19,11 +15,11 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/orders")
 public class OrderController {
     private final OrderService orderService;
-    @GetMapping("/placeOrder")
+    @PostMapping("/placeOrder")
     public ResponseEntity<Response> placeOrder(@RequestBody @Valid OrderRequest orderRequest){
         return ResponseEntity.ok().body(orderService.placeOrder(orderRequest));
     }
-    @GetMapping("/pending")
+    /*@GetMapping("/pending")
     public ResponseEntity<Response> getPendingOrders(){
         return ResponseEntity.ok().body(orderService.viewOrderByStatus(String.valueOf(Status.PENDING)));
     }
@@ -34,6 +30,5 @@ public class OrderController {
     @GetMapping("/all")
     public ResponseEntity<Response> getAllOrders(){
         return ResponseEntity.ok().body(orderService.viewOrderByStatus(String.valueOf(Status.ALL)));
-    }
+    }*/
 }
-*/

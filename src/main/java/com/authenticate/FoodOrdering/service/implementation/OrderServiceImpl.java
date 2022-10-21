@@ -1,24 +1,17 @@
-/*
 package com.authenticate.FoodOrdering.service.implementation;
 
 import com.authenticate.FoodOrdering.dto.request.OrderRequest;
 import com.authenticate.FoodOrdering.dto.response.Response;
-import com.authenticate.FoodOrdering.enums.Status;
 import com.authenticate.FoodOrdering.model.Orders;
 import com.authenticate.FoodOrdering.repository.OrderRepo;
 import com.authenticate.FoodOrdering.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.TimeZone;
+
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
         return null;
     }
 
-    @Override
+    /*@Override
     public Response viewOrderByStatus(String status) {
         try{
             if(status.equalsIgnoreCase(String.valueOf(Status.COMPLETED))){
@@ -104,9 +97,9 @@ public class OrderServiceImpl implements OrderService {
 
         }
         return resp;
-    }
+    }*/
 
-    @Override
+   /* @Override
     @Scheduled(fixedRate = 1000)
     public void updateOrderStatus() {
         try{
@@ -121,6 +114,5 @@ public class OrderServiceImpl implements OrderService {
         }
 
 
-    }
+    }*/
 }
-*/

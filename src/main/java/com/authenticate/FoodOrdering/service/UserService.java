@@ -3,14 +3,14 @@ package com.authenticate.FoodOrdering.service;
 
 import com.authenticate.FoodOrdering.dto.request.UserRequest;
 import com.authenticate.FoodOrdering.dto.response.Response;
-import org.springframework.http.ResponseEntity;
+import com.authenticate.FoodOrdering.exception.BadRequestException;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
 
-    Response signUp(UserRequest userRequest);
+    Response signUp(UserRequest userRequest) throws BadRequestException;
 
-    ResponseEntity<Object> login(UserRequest userRequest);
+    Response login(UserRequest userRequest);
 
 }

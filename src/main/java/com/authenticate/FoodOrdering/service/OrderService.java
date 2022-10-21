@@ -7,8 +7,10 @@ public interface OrderService {
 
     Response placeOrder(OrderRequest orderRequest) ;
     Response viewOrdersByUser(Long userId);
+/*
     Response viewOrderByStatus(String status);
-    void updateOrderStatus();
+*/
+   /* void updateOrderStatus();*/
 
 
 }

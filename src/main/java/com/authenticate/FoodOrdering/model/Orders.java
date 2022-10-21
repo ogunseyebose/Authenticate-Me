@@ -21,5 +21,4 @@ public class Orders {
     private LocalDateTime availableTime;
     private Character isCompleted;
 
-
 }
