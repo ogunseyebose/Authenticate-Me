@@ -125,17 +125,5 @@ public class RsaAesGcmStandard {
 
 
 
-	public static void main(String [] args)throws Exception {
 
-		//String key = getSecretAESKeyAsString();
-		String key = "KI9/cuAV3zQ0O5QNGIMwPpAWnMSwueRWLPwHMcTUiQ0=";
-		String me = "{\n" +
-				"    \"userId\": \"iadelabu@ecobank.com\"\n" +
-				"}";
-		String enc = encryptTextUsingAES(me, key);
-
-		System.out.println(key);
-		System.out.println(enc);
-		System.out.println(decryptTextUsingAES(enc, key));
-	}
 }
