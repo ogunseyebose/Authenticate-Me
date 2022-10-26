@@ -22,6 +22,15 @@ public class User {
     private LocalDateTime dtModified;
 
 
+    public User() {
+    }
 
-
+    public User(Long userId, String email, String password, String accountStatus, LocalDateTime dtCreated, LocalDateTime dtModified) {
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+        this.accountStatus = accountStatus;
+        this.dtCreated = dtCreated;
+        this.dtModified = dtModified;
+    }
 }

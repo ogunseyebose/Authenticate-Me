@@ -34,6 +34,7 @@ public class EmailService {
         message.setTo(recipient);
         message.setSubject(subject);
         message.setText(content);
+
         message.setSentDate(new Date());
         try{
         emailSender.send(message);

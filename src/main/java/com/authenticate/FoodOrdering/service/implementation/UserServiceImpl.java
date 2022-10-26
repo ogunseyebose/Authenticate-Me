@@ -18,6 +18,7 @@ import com.authenticate.FoodOrdering.utils.encryption.EncryptionService;
 import com.authenticate.FoodOrdering.utils.encryption.ResponseCodes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
         if(userRequest.getEmail()==null || userRequest.getPassword()==null){
             resp.setResp_Code(ResponseCodes.BAD_DATA.getCode());
             resp.setResp_Msg(ResponseCodes.BAD_DATA.getMessage());
-            //throw new BadRequestException(ResponseCodes.BAD_DATA,"Username or password cannot be empty ",HttpStatus.BAD_REQUEST);
+            throw new BadRequestException(ResponseCodes.BAD_DATA,"Username or password cannot be empty ",HttpStatus.BAD_REQUEST);
         }
             Optional<User> userOptional = userRepo.findByEmail(userRequest.getEmail());
             if (userOptional.isPresent()) {
