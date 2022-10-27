@@ -19,7 +19,19 @@ public class OrderController {
     public ResponseEntity<Response> placeOrder(@RequestBody @Valid OrderRequest orderRequest){
         return ResponseEntity.ok().body(orderService.placeOrder(orderRequest));
     }
-    /*@GetMapping("/pending")
+    @GetMapping("/userOrders/{userId}")
+    public ResponseEntity<Response> userOrders(@PathVariable ("userId") Long userId){
+        return ResponseEntity.ok().body(orderService.viewOrdersByUser(userId));
+    }
+    @GetMapping("/totalUserOrders/{userId}")
+    public ResponseEntity<Response> totalUserOrders(@PathVariable ("userId") Long userId){
+        return ResponseEntity.ok().body(orderService.totalOrderPerUser(userId));
+    }
+    @GetMapping("/dashboard")
+    public ResponseEntity<Response> allOrders(){
+        return ResponseEntity.ok().body(orderService.viewOrderByStatus(String.valueOf(Status.PENDING)));
+    }
+    @GetMapping("/pending")
     public ResponseEntity<Response> getPendingOrders(){
         return ResponseEntity.ok().body(orderService.viewOrderByStatus(String.valueOf(Status.PENDING)));
     }
@@ -30,5 +42,5 @@ public class OrderController {
     @GetMapping("/all")
     public ResponseEntity<Response> getAllOrders(){
         return ResponseEntity.ok().body(orderService.viewOrderByStatus(String.valueOf(Status.ALL)));
-    }*/
+    }
 }

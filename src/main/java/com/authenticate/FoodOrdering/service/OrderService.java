@@ -7,9 +7,12 @@ public interface OrderService {
 
     Response placeOrder(OrderRequest orderRequest) ;
     Response viewOrdersByUser(Long userId);
-/*
+   Response totalOrderPerUser(Long userId);
+//   Response totalOrders();
+
+
     Response viewOrderByStatus(String status);
-*/
+
    /* void updateOrderStatus();*/
 
 

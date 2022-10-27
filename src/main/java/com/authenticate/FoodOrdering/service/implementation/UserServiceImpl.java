@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
 
         } else {
             resp.setResp_Code("82");
-            resp.setResp_Msg("Invalid Credentials");
+            resp.setResp_Msg("User does  not exist ");
         }
         return resp;
     }

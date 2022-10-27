@@ -30,7 +30,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 				.and().frameOptions().sameOrigin()
 				.and().authorizeRequests()
 				.and().authorizeRequests()
-				.antMatchers("/api/v1/user/signUp","/webjars/**","/api/v1/user/login", "/swagger-ui*/**", "/v3/api-docs/**").permitAll()
+				.antMatchers("/api/v1/user/signUp","/webjars/**","/api/v1/user/login", "/swagger-ui*/**", "/v3/api-docs/**","/api/v1/orders/dashboard").permitAll()
 				.anyRequest().authenticated().and()
 				.addFilter(new JWTAuthorizationFilter(authenticationManager()))
 				// this disables session creation on Spring Security

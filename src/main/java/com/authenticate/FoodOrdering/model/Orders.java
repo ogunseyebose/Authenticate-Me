@@ -3,7 +3,6 @@ package com.authenticate.FoodOrdering.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -16,7 +15,7 @@ public class Orders {
     private Long orderId;
     private Long userId;
     private Long quantity;
-    private LocalTime orderTime;
+    private LocalDateTime orderTime;
     private LocalTime waitingTime;
     private LocalDateTime availableTime;
     private Character isCompleted;
