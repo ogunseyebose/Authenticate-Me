@@ -4,20 +4,24 @@ import com.authenticate.FoodOrdering.config.EmailService;
 import com.authenticate.FoodOrdering.dto.request.OrderRequest;
 import com.authenticate.FoodOrdering.dto.response.Response;
 import com.authenticate.FoodOrdering.enums.Status;
+import com.authenticate.FoodOrdering.exception.GenericException;
+import com.authenticate.FoodOrdering.exception.SaveException;
 import com.authenticate.FoodOrdering.model.Orders;
 import com.authenticate.FoodOrdering.model.User;
 import com.authenticate.FoodOrdering.repository.OrderRepo;
 import com.authenticate.FoodOrdering.repository.UserRepo;
 import com.authenticate.FoodOrdering.service.OrderService;
+import com.authenticate.FoodOrdering.utils.encryption.ResponseCodes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Sort;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Arrays;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -44,8 +48,11 @@ public class OrderServiceImpl implements OrderService {
     @Value("${orderSubject}")
     private String orderSubject;
     @Override
-    public Response placeOrder(OrderRequest orderRequest) {
+    public Response placeOrder(OrderRequest orderRequest) throws SaveException {
         try{
+            if(orderRequest.getQuantity()==0|| orderRequest.getUserId()==null){
+                throw new SaveException(ResponseCodes.BAD_DATA,"Quantity or UserId cannot be empty", HttpStatus.BAD_REQUEST);
+            }
             Optional<User> user= userRepo.findById(orderRequest.getUserId());
             if(user.isPresent()){
                 log.info("Date "+ LocalDateTime.now());
@@ -66,12 +73,11 @@ public class OrderServiceImpl implements OrderService {
             else{
                 resp.setResp_Code("84");
                 resp.setResp_Msg("User does not exist");
-
             }
-        } catch (Exception e) {
-            resp.setResp_Code("99");
-            resp.setResp_Msg("Failed");
-            throw new RuntimeException(e);
+        } catch (SaveException e){
+                throw e;
+        }catch (Exception e) {
+                throw new GenericException(ResponseCodes.PROCESS_ERROR, "Internal Server Error",HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return resp;
     }
@@ -130,8 +136,8 @@ public class OrderServiceImpl implements OrderService {
     public Response viewOrderByStatus(String status) {
         Response resp= new Response();
         try{
-            if(status.equalsIgnoreCase(String.valueOf(Status.COMPLETED))){
-               List<Orders> ordersList= orderRepo.findByIsCompletedOrderByIsCompletedAsc('Y', Sort.by(Sort.Direction.ASC));
+            if(status==String.valueOf(Status.COMPLETED)){
+               List<Orders> ordersList= orderRepo.findByIsCompleted('Y');
                 if(ordersList.isEmpty()){
                     resp.setResp_Code("82");
                     resp.setResp_Msg("No order is completed");
@@ -142,8 +148,8 @@ public class OrderServiceImpl implements OrderService {
                     resp.setData(ordersList);
                 }
             }
-            else if(status.equalsIgnoreCase(String.valueOf(Status.PENDING))){
-                final List<Orders> ordersList= orderRepo.findByIsCompletedOrderByIsCompletedAsc('N', Sort.by(Sort.Direction.ASC));
+            else if(status==String.valueOf(Status.PENDING)){
+                List<Orders> ordersList= orderRepo.findByIsCompleted('N');
 
                 if(ordersList.isEmpty()){
                     resp.setResp_Code("82");
@@ -155,8 +161,8 @@ public class OrderServiceImpl implements OrderService {
                     resp.setData(ordersList);
                 }
             }
-            else if(status.equalsIgnoreCase(String.valueOf(Status.ALL))){
-                final List<Orders> ordersList= orderRepo.findAll();
+            else if(status==String.valueOf(Status.ALL)){
+                List<Orders> ordersList= orderRepo.findAll();
                 if(ordersList.isEmpty()){
                     resp.setResp_Code("82");
                     resp.setResp_Msg("No order available");

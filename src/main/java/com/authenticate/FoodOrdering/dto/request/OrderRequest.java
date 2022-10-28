@@ -15,4 +15,6 @@ public class OrderRequest {
     private LocalDateTime orderTime;
     private LocalTime waitingTime;
     private LocalDateTime availableTime;
+
+
 }

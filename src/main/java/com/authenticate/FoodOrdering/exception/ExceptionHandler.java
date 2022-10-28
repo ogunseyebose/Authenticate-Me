@@ -23,18 +23,18 @@ public class ExceptionHandler {
                                            HttpServletRequest request, HttpServletResponse response) {
         log.error("Exception occurred while saving : {} because: {} ", request.getRequestURI(), response.getStatus());
 
-        return ResponseEntity.internalServerError().body((new Response("99", "Email couldn't be sent successfully")));
+        return ResponseEntity.internalServerError().body((new Response("99", ex.getMessage())));
     }
     public ResponseEntity<Response> handleGeneric(GenericException ex,
                                                   HttpServletRequest request, HttpServletResponse response) {
         log.error("Exception occurred while processing the request: {} because: {}" , request.getRequestURI(), response.getStatus());
 
-        return ResponseEntity.internalServerError().body((new Response("99", "Email couldn't be sent successfully")));
+        return ResponseEntity.internalServerError().body((new Response("99", ex.getMessage())));
     }
     public ResponseEntity<Response> handle(BadRequestException ex,
                                                   HttpServletRequest request, HttpServletResponse response) {
         log.error("Exception occurred while processing the request: {} because: {} ", request.getRequestURI(), response.getStatus());
 
-        return ResponseEntity.internalServerError().body((new Response("99", "Email couldn't be sent successfully")));
+        return ResponseEntity.internalServerError().body((new Response("99", ex.getMessage())));
     }
 }
