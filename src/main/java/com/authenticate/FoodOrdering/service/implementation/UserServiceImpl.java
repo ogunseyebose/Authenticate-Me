@@ -5,9 +5,6 @@ import com.authenticate.FoodOrdering.dto.request.UserRequest;
 import com.authenticate.FoodOrdering.dto.response.Response;
 import com.authenticate.FoodOrdering.exception.BadRequestException;
 import com.authenticate.FoodOrdering.exception.GenericException;
-import com.authenticate.FoodOrdering.exception.MailingException;
-import com.authenticate.FoodOrdering.exception.SaveException;
-import com.authenticate.FoodOrdering.model.Credentials;
 import com.authenticate.FoodOrdering.model.Token;
 import com.authenticate.FoodOrdering.model.User;
 import com.authenticate.FoodOrdering.repository.UserRepo;
@@ -80,7 +77,7 @@ public class UserServiceImpl implements UserService {
                if(userRepo.findByEmail(userRequest.getEmail()).isPresent()){
                    resp.setResp_Code("00");
                    resp.setResp_Msg("Success");
-                   resp.setData(userRepo.findByEmail(userRequest.getEmail()).get());
+                   resp.setData(userRepo.findByEmail(userRequest.getEmail()).get().getEmail());
                        emailService.sendmail(sender, userRequest.getEmail(), signUpSubject, signUpContent);
                }
                else{

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ByteArrayResource;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -19,6 +20,7 @@ import javax.mail.internet.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -34,7 +36,6 @@ public class EmailService {
         message.setTo(recipient);
         message.setSubject(subject);
         message.setText(content);
-
         message.setSentDate(new Date());
         try{
         emailSender.send(message);
@@ -43,29 +44,25 @@ public class EmailService {
         }
 
 }
-public void sendmail(String sender,String recipient,String subject,String content,String attachFile) throws AddressException, MessagingException, IOException, MailingException {
+/*public void sendmail(String sender,String recipient,String subject,String content) throws AddressException, MessagingException, IOException, MailingException {
+try {
+    MimeMessage message = emailSender.createMimeMessage();
+    MimeMessageHelper helper = new MimeMessageHelper(message,
+            MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+            StandardCharsets.UTF_8.name());
 
-    MimeMessagePreparator preparator = new MimeMessagePreparator()
-    {
-        public void prepare(MimeMessage mimeMessage) throws Exception
-        {
-            mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-            mimeMessage.setFrom(new InternetAddress(sender));
-            mimeMessage.setSubject(subject);
-            mimeMessage.setText(content);
-            FileInputStream inputStream = new FileInputStream(new File(attachFile));
+    helper.addAttachment("logoNew.png", new ClassPathResource("memorynotfound-logo.png"));
+    String inlineImage = "<img src=\"/Users/ogunseyebose/Desktop/logoNew.png\"></img><br/>";
 
-            //FileSystemResource file = new FileSystemResource(new File(attachFile));
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-            helper.addAttachment("Picture", new ByteArrayResource(IOUtils.toByteArray(inputStream)));
-        }
-    };
+    helper.setText(inlineImage + content, true);
+    helper.setSubject(subject);
+    helper.setTo(recipient);
+    helper.setFrom(sender);
 
-    try {
-       emailSender.send(preparator);
-    }
+    emailSender.send(message);
+}
     catch (MailException error){
         throw new MailingException("99","Error Sending Mail", HttpStatus.INTERNAL_SERVER_ERROR);
     }
-}
+}*/
 }
